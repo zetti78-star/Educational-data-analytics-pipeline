@@ -1,0 +1,88 @@
+SELECT
+    u.firstname + ' ' + u.lastname AS NomeCompleto,
+    u.email,
+    COALESCE(g.name, 'Sem Escola') AS Escola, 
+    DATEADD(SECOND, ue.timecreated, '1970-01-01') AS DataMatricula,
+    DATEADD(SECOND, ul.timeaccess, '1970-01-01') AS UltimoAcesso,
+    -- NOVA COLUNA DE STATUS
+    CASE WHEN ue.status = 0 THEN 'Ativo' ELSE 'Suspenso' END AS StatusMatricula,
+
+    -- DESAFIOS (Mantendo os nomes completos que você precisava)
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 1 %' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [Desafio 1 – Org. e preparação (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 1 %' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [Desafio 1 – Org. e preparação (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 2 %' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [Desafio 2 – Alvenaria (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 2 %' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [Desafio 2 – Alvenaria (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 3 %' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [Desafio 3 – Madeira (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 3 %' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [Desafio 3 – Madeira (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 4 %' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [Desafio 4 – Metal (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 4 %' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [Desafio 4 – Metal (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 5 %' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [Desafio 5 – Patologias (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 5 %' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [Desafio 5 – Patologias (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 6 %' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [Desafio 6 – Textura (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 6 %' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [Desafio 6 – Textura (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 7 %' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [Desafio 7 – Airless (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 7 %' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [Desafio 7 – Airless (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 8 %' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [Desafio 8 – Croquis (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 8 %' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [Desafio 8 – Croquis (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 9 %' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [Desafio 9 – Projetos (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 9 %' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [Desafio 9 – Projetos (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 10 (parte 1)%' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [Desafio 10 P1 – Orçamento (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 10 (parte 1)%' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [Desafio 10 P1 – Orçamento (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 10 (parte 2)%' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [Desafio 10 P2 – Orçamento (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE 'Desafio 10 (parte 2)%' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [Desafio 10 P2 – Orçamento (Status)],
+
+    -- ENCONTROS PRESENCIAIS
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 1%' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [EP1 – Alvenaria (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 1%' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [EP1 – Alvenaria (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 2%' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [EP2 – Alvenaria (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 2%' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [EP2 – Alvenaria (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 3%' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [EP3 – Alvenaria (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 3%' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [EP3 – Alvenaria (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 4%' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [EP4 – Madeira (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 4%' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [EP4 – Madeira (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 5%' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [EP5 – Metal (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 5%' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [EP5 – Metal (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 6%' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [EP6 – Patologias (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 6%' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [EP6 – Patologias (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 7%' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [EP7 – Textura (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 7%' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [EP7 – Textura (Status)],
+
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 8%' THEN CAST(gg.finalgrade AS FLOAT) / 100000 END) AS [EP8 – Airless (Nota)],
+    MAX(CASE WHEN gi.itemname LIKE '%Encontro presencial 8%' THEN (CASE WHEN cmc.completionstate IN (1, 2) THEN '✔️' ELSE 'X' END) END) AS [EP8 – Airless (Status)]
+
+FROM prefix_user u
+JOIN prefix_user_enrolments ue ON ue.userid = u.id
+JOIN prefix_enrol e ON e.id = ue.enrolid
+JOIN prefix_course c ON c.id = e.courseid
+LEFT JOIN prefix_groups_members gm ON gm.userid = u.id
+LEFT JOIN prefix_groups g ON g.id = gm.groupid AND g.courseid = c.id
+LEFT JOIN prefix_user_lastaccess ul ON ul.userid = u.id AND ul.courseid = c.id
+JOIN prefix_course_modules cm ON cm.course = c.id
+JOIN prefix_modules m ON m.id = cm.module
+JOIN prefix_grade_items gi ON gi.iteminstance = cm.instance AND gi.courseid = c.id AND gi.itemmodule = m.name
+LEFT JOIN prefix_grade_grades gg ON gg.itemid = gi.id AND gg.userid = u.id
+LEFT JOIN prefix_course_modules_completion cmc ON cmc.coursemoduleid = cm.id AND cmc.userid = u.id
+
+WHERE c.shortname LIKE '%QS_PINIMO_150_261T01%'
+AND u.deleted = 0
+-- REMOVI O FILTRO DE STATUS = 0 PARA TRAZER SUSPENSOS TAMBÉM
+AND gi.itemtype = 'mod' 
+
+GROUP BY u.id, u.firstname, u.lastname, u.email, g.name, ue.timecreated, ul.timeaccess, ue.status
+ORDER BY NomeCompleto ASC
