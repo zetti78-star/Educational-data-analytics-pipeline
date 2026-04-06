@@ -57,7 +57,4 @@ Excel
 
 This project was developed based on a real-world educational scenario.
 
-### 📸 Dashboard Preview
-
-!(dashboard/dashboard-preview.png)
-
+![Dashboard](dashboard-preview.png)
