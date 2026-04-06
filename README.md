@@ -1,2 +1,3 @@
-# Educational-data-analytics-pipeline
-Automated data pipeline for educational reports using SQL, Power Query and Power BI
+This project automates the extraction, transformation and visualization of educational data from Moodle.
+
+It was designed to reduce manual work, eliminate errors and provide fast, reliable insights for both management and operational teams
