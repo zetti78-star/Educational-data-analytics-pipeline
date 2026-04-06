@@ -60,3 +60,4 @@ This project was developed based on a real-world educational scenario.
 ### 📸 Dashboard Preview
 
 ![Dashboard](dashboard/dashboard-preview.png)
+
